@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Real-time Escape from Tarkov Goon squad location tracker — PvE and PvP modes" />
   <title>Goon Tracker — EFT</title>
+  <link id="favicon" rel="icon" type="image/png" href="images/knight.png" />
+  <link id="favicon-touch" rel="apple-touch-icon" href="images/knight.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
@@ -151,6 +153,11 @@
     const base = window.location.origin + '/overlay.html';
     document.getElementById('overlay-url').textContent = base;
     document.getElementById('overlay-url-pvp').textContent = base + '?mode=regular';
+
+    // Random favicon on each load
+    const _faviconSrc = GOON_IMAGES[Math.floor(Math.random() * GOON_IMAGES.length)];
+    document.getElementById('favicon').href = _faviconSrc;
+    document.getElementById('favicon-touch').href = _faviconSrc;
   </script>
 </body>
 </html>
