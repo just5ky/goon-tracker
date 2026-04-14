@@ -8,16 +8,23 @@ Real-time Escape from Tarkov Goon location tracker — OBS overlay + web dashboa
 
 - Live OBS overlay showing current Goon map location
 - Web dashboard with last 10 reported locations
-- PVE mode
+- **PvE and PvP mode toggle** — switch on the website or overlay, saved automatically
 - Auto-refreshes every 3 minutes
-- Staleness colour coding (fresh / old / stale)
+- Dual in-game Tarkov clock (both server pools, millisecond precision)
+- Staleness colour coding (fresh / warning / stale)
 - Random Knight / Big Pipe / Bird's Eye image rotation
 
 ---
 
 ## Who Are the Goons?
 
-The Goons (Knight, Big Pipe, and Bird's Eye) are a roaming squad of Scavs that can spawn on different maps each raid. Knowing their last reported location gives you a heads-up before loading in.
+The Goons (Knight, Big Pipe, and Bird's Eye) are a roaming squad of Scavs that spawn on a single map per raid cycle. Knowing their last reported location gives you a heads-up before loading in.
+
+---
+
+## How to Report Sightings
+
+Use [Tarkov Monitor](https://tarkov.dev/tarkov-monitor) — a background app that automatically submits your goon sightings to tarkov.dev while you play. It runs silently alongside the game and requires no manual input.
 
 ---
 
@@ -33,7 +40,7 @@ Drop three images into the `images/` folder. Filenames must match exactly:
 | `images/bigpipe.png` | Big Pipe |
 | `images/birdseye.png` | Bird's Eye |
 
-Any format works (`.png`, `.jpg`, `.webp`) as long as the extension matches what you set.
+Any format works (`.png`, `.jpg`, `.webp`) as long as the extension matches.
 
 ---
 
@@ -43,14 +50,33 @@ Any format works (`.png`, `.jpg`, `.webp`) as long as the extension matches what
 2. Check **Local file** and point to `overlay.html`
    - Local path: `file:///C:/path/to/goon-tracker/overlay.html`
    - Or if hosted: `https://yourdomain.com/overlay.html`
-3. Set width `300`, height `100` (adjust to taste)
+3. Set width `355`, height `104` (adjust to taste)
 4. Enable **Shutdown source when not visible** (optional, saves resources)
 
-The overlay refreshes automatically every 3 minutes. No interaction needed.
+The overlay refreshes automatically every 3 minutes.
+
+#### PvE vs PvP mode
+
+Use the **PvE / PvP** buttons inside the overlay to switch modes. Your selection is saved in the browser and persists across reloads.
+
+To lock a mode via URL (no in-overlay clicking needed):
+
+| Mode | URL |
+|---|---|
+| PvE (default) | `https://yourdomain.com/overlay.html` |
+| PvP | `https://yourdomain.com/overlay.html?mode=regular` |
+
+The URL parameter takes priority over any saved preference.
 
 ---
 
-### 3. Colour Guide
+### 3. Website
+
+Open `index.html` in a browser or host the folder on any static server. Use the **PvE / PvP** toggle in the header to switch between game modes. The selection is saved automatically.
+
+---
+
+### 4. Colour Guide
 
 | Colour | Meaning |
 |---|---|
@@ -92,10 +118,14 @@ All data sourced from the [tarkov.dev GraphQL API](https://api.tarkov.dev) — a
     timestamp
     map {
       name
+      raidDuration
+      wiki
     }
   }
 }
 ```
+
+The `gameMode` field accepts `pve` or `pvp`.
 
 ---
 
@@ -110,6 +140,7 @@ goon-tracker/
 ├── overlay.css      — overlay styles
 ├── site.js          — dashboard logic
 ├── overlay.js       — overlay logic
+├── app.js           — standalone overlay logic (legacy, not loaded by default)
 ├── nginx.conf       — nginx config for Docker
 ├── Dockerfile
 ├── docker-compose.yml
@@ -121,4 +152,5 @@ goon-tracker/
 ## Credits
 
 - Data: [tarkov.dev](https://tarkov.dev) community API
+- Reporting: [Tarkov Monitor](https://tarkov.dev/tarkov-monitor)
 - Game: Escape from Tarkov by Battlestate Games

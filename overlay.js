@@ -6,14 +6,36 @@ const GOON_IMAGES = [
 
 const POLL_INTERVAL_MS = 180_000; // 3 minutes
 
-const QUERY = `{
-  goonReports(gameMode: pve, lang: en, limit: 1) {
-    timestamp
-    map {
-      name
+// Mode: URL param > localStorage > default pve
+// API uses 'pve' or 'regular' (PvP). 'pvp' is a legacy alias.
+const _resolveMode = raw => {
+  if (raw === 'pve') return 'pve';
+  if (raw === 'regular' || raw === 'pvp') return 'regular';
+  return 'pve';
+};
+const _urlMode = new URLSearchParams(window.location.search).get('mode');
+let currentMode = _urlMode
+  ? _resolveMode(_urlMode)
+  : _resolveMode(localStorage.getItem('goonMode'));
+
+function getQuery() {
+  return `{
+    goonReports(gameMode: ${currentMode}, lang: en, limit: 1) {
+      timestamp
+      map {
+        name
+      }
     }
-  }
-}`;
+  }`;
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  localStorage.setItem('goonMode', mode);
+  const indicator = document.getElementById('mode-indicator');
+  if (indicator) indicator.textContent = mode === 'pve' ? 'PVE' : 'PVP';
+  fetchGoonReport();
+}
 
 // Guaranteed no consecutive repeat
 let lastImage = null;
@@ -78,7 +100,7 @@ async function fetchGoonReport() {
     const res = await fetch('https://api.tarkov.dev/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: QUERY }),
+      body: JSON.stringify({ query: getQuery() }),
     });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -123,8 +145,12 @@ function showError(msg) {
 }
 
 // Init
+document.addEventListener('DOMContentLoaded', () => {
+  const indicator = document.getElementById('mode-indicator');
+  if (indicator) indicator.textContent = currentMode === 'pve' ? 'PVE' : 'PVP';
+
+  updateTarkovClock();
+  setInterval(updateTarkovClock, 50); // 50ms real = ~350ms Tarkov time per tick
+});
 fetchGoonReport();
 setInterval(fetchGoonReport, POLL_INTERVAL_MS);
-
-updateTarkovClock();
-setInterval(updateTarkovClock, 50); // 50ms real = ~350ms Tarkov time per tick

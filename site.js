@@ -6,16 +6,34 @@ const GOON_IMAGES = [
 
 const POLL_INTERVAL_MS = 180_000; // 3 minutes
 
-const QUERY = `{
-  goonReports(gameMode: pve, lang: en, limit: 10) {
-    timestamp
-    map {
-      name
-      raidDuration
-      wiki
+// API uses 'pve' or 'regular' (PvP). 'pvp' is a legacy alias.
+const _resolveMode = raw => {
+  if (raw === 'pve') return 'pve';
+  if (raw === 'regular' || raw === 'pvp') return 'regular';
+  return 'pve';
+};
+let currentMode = _resolveMode(localStorage.getItem('goonMode'));
+
+function getQuery() {
+  return `{
+    goonReports(gameMode: ${currentMode}, lang: en, limit: 10) {
+      timestamp
+      map {
+        name
+        raidDuration
+        wiki
+      }
     }
-  }
-}`;
+  }`;
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  localStorage.setItem('goonMode', mode);
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === mode));
+  loadReports();
+}
 
 // Guaranteed no consecutive repeat
 let lastImage = null;
@@ -89,6 +107,8 @@ async function loadReports() {
   const bodyEl = document.getElementById('report-body');
   const btn = document.getElementById('refresh-btn');
 
+  if (!statusEl || !bodyEl || !btn) return;
+
   statusEl.textContent = 'Updating...';
   btn.disabled = true;
 
@@ -96,7 +116,7 @@ async function loadReports() {
     const res = await fetch('https://api.tarkov.dev/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: QUERY }),
+      body: JSON.stringify({ query: getQuery() }),
     });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -150,6 +170,10 @@ async function loadReports() {
 }
 
 // Init
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === currentMode));
+});
 loadReports();
 setInterval(loadReports, POLL_INTERVAL_MS);
 

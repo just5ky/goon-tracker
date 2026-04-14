@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Real-time Escape from Tarkov Goon squad location tracker — PVE mode" />
+  <meta name="description" content="Real-time Escape from Tarkov Goon squad location tracker — PvE and PvP modes" />
   <title>Goon Tracker — EFT</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +20,13 @@
         <img id="header-goon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Goon" />
         <div id="header-text">
           <h1>Goon Tracker</h1>
-          <span id="mode-badge">PVE · Auto-updates every 3 min</span>
+          <div id="mode-row">
+            <div id="mode-toggle">
+              <button class="mode-btn" data-mode="pve" onclick="setMode('pve')">PvE</button>
+              <button class="mode-btn" data-mode="regular" onclick="setMode('regular')">PvP</button>
+            </div>
+            <span id="mode-badge">Auto-updates every 3 min</span>
+          </div>
         </div>
       </div>
       <div id="header-right">
@@ -101,14 +107,30 @@
         </div>
 
         <div class="guide-card">
+          <div class="guide-card-title">How to Report</div>
+          <div class="guide-card-body">
+            Spotted goons in-game? Use
+            <a href="https://tarkov.dev/tarkov-monitor" target="_blank" rel="noopener" class="guide-link">Tarkov Monitor</a>
+            — a background app that automatically submits your sightings
+            to tarkov.dev while you play. Runs silently alongside the game.
+          </div>
+        </div>
+
+        <div class="guide-card">
           <div class="guide-card-title">OBS Overlay</div>
           <div class="guide-card-body">
             Add a Browser Source in OBS and point it at:
           </div>
           <div class="obs-url" id="overlay-url">/overlay.html</div>
           <div class="guide-card-body">
-            Recommended size: 300 × 100 px. Enable transparent background.
+            Recommended size: 355 × 104 px. Enable transparent background.
+            Use the <strong style="color:#c9a84c">PvE / PvP</strong> toggle on this
+            page to switch modes — saved automatically and reflected in the overlay.
           </div>
+          <div class="guide-card-body">
+            To force a mode via URL (locks regardless of saved preference):
+          </div>
+          <div class="obs-url" id="overlay-url-pvp">/overlay.html?mode=regular</div>
         </div>
 
       </div>
@@ -125,9 +147,10 @@
 
   <script src="site.js"></script>
   <script>
-    // Set overlay URL to absolute for easy copy
-    document.getElementById('overlay-url').textContent =
-      window.location.origin + '/overlay.html';
+    // Set overlay URLs to absolute for easy copy
+    const base = window.location.origin + '/overlay.html';
+    document.getElementById('overlay-url').textContent = base;
+    document.getElementById('overlay-url-pvp').textContent = base + '?mode=regular';
   </script>
 </body>
 </html>

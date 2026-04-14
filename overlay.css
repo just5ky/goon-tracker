@@ -8,7 +8,7 @@ body {
   align-items: center;
   gap: 14px;
   padding: 10px 14px;
-  background: rgba(10, 10, 10, 0.72);
+  background: rgba(10, 10, 10, 0.45);
   border: 1px solid rgba(180, 160, 120, 0.25);
   border-radius: 4px;
   width: fit-content;
@@ -29,7 +29,7 @@ body {
 }
 
 #map-name {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -38,13 +38,13 @@ body {
 }
 
 #last-seen {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.03em;
   opacity: 0.85;
 }
 
 #tarkov-time {
-  font-size: 11px;
+  font-size: 13px;
   color: #c9a84c;
   letter-spacing: 0.04em;
   margin-top: 2px;
@@ -57,4 +57,11 @@ body {
 
 #tarkov-time .tarkov-sep {
   color: #555;
+}
+
+#mode-indicator {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(201, 168, 76, 0.55);
 }

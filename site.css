@@ -76,6 +76,43 @@ h1 {
   line-height: 1;
 }
 
+#mode-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#mode-toggle {
+  display: flex;
+  gap: 3px;
+}
+
+.mode-btn {
+  background: transparent;
+  border: 1px solid var(--border-accent);
+  color: var(--text-faint);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.mode-btn.active {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  background: rgba(201, 168, 76, 0.07);
+}
+
+.mode-btn:hover:not(.active) {
+  border-color: var(--border-accent);
+  color: var(--text-muted);
+}
+
 #mode-badge {
   display: inline-block;
   font-size: 9px;
@@ -250,12 +287,10 @@ h1 {
   color: var(--text);
   font-size: 14px;
   letter-spacing: 0.04em;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
 }
 
 .map-name {
+  display: block;
   text-transform: uppercase;
 }
 
@@ -272,6 +307,8 @@ h1 {
 }
 
 .map-meta {
+  display: block;
+  margin-top: 3px;
   font-size: 10px;
   color: var(--text-faint);
   letter-spacing: 0.06em;
@@ -360,6 +397,18 @@ h1 {
   margin-top: 6px;
 }
 
+.guide-link {
+  color: var(--gold-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-dim);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.guide-link:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
 .obs-url {
   background: #0a0b09;
   border: 1px solid var(--border);
@@ -402,17 +451,51 @@ footer a {
 footer a:hover { color: var(--gold-dim); }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
+
+/* Tablet */
+@media (max-width: 768px) {
+  #app { padding: 28px 18px 52px; gap: 28px; }
+
+  header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  #header-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #tarkov-clock { gap: 6px; }
+
+  .tarkov-clock-times { font-size: 12px; }
+
+  #header-meta { gap: 8px; }
+}
+
+/* Mobile */
 @media (max-width: 500px) {
-  #app { padding: 24px 14px 48px; gap: 24px; }
+  #app { padding: 20px 14px 44px; gap: 20px; }
+
+  header { gap: 10px; }
 
   h1 { font-size: 20px; }
 
-  #header-goon { width: 48px; height: 48px; }
+  #header-goon { width: 44px; height: 44px; }
+
+  #tarkov-clock { display: none; }
 
   #update-status { display: none; }
+
+  #mode-row { gap: 8px; }
 
   #report-table { font-size: 12px; }
   .map-cell { font-size: 13px; }
 
   .guide-grid { grid-template-columns: 1fr; }
+
+  .obs-url { font-size: 11px; }
 }

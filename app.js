@@ -6,23 +6,48 @@ const GOON_IMAGES = [
 
 const POLL_INTERVAL_MS = 180_000; // 3 minutes
 
-const QUERY = `{
-  goonReports(gameMode: pve, lang: en, limit: 1) {
-    timestamp
-    map {
-      name
-    }
-  }
-}`;
+// Mode: URL param > localStorage > default pve
+// API uses 'pve' or 'regular' (PvP). 'pvp' is a legacy alias.
+const _resolveMode = raw => {
+  if (raw === 'pve') return 'pve';
+  if (raw === 'regular' || raw === 'pvp') return 'regular';
+  return 'pve';
+};
+const _urlMode = new URLSearchParams(window.location.search).get('mode');
+let currentMode = _urlMode
+  ? _resolveMode(_urlMode)
+  : _resolveMode(localStorage.getItem('goonMode'));
 
-function pickRandomImage() {
-  const idx = Math.floor(Math.random() * GOON_IMAGES.length);
-  return GOON_IMAGES[idx];
+function getQuery() {
+  return `{
+    goonReports(gameMode: ${currentMode}, lang: en, limit: 1) {
+      timestamp
+      map {
+        name
+      }
+    }
+  }`;
 }
 
+function setMode(mode) {
+  currentMode = mode;
+  localStorage.setItem('goonMode', mode);
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === mode));
+  fetchGoonReport();
+}
+
+// Guaranteed no consecutive repeat
+let lastImage = null;
+function pickRandomImage() {
+  const available = GOON_IMAGES.filter(img => img !== lastImage);
+  lastImage = available[Math.floor(Math.random() * available.length)];
+  return lastImage;
+}
+
+// API returns timestamp in milliseconds
 function timeAgo(timestamp) {
-  const reportedAt = new Date(timestamp * 1000);
-  const diffMs = Date.now() - reportedAt.getTime();
+  const diffMs = Date.now() - parseInt(timestamp, 10);
   const diffMin = Math.floor(diffMs / 60_000);
 
   if (diffMin < 1) return 'Just now';
@@ -36,9 +61,7 @@ function timeAgo(timestamp) {
 }
 
 function stalenessClass(timestamp) {
-  const diffMs = Date.now() - new Date(timestamp * 1000).getTime();
-  const diffMin = diffMs / 60_000;
-
+  const diffMin = (Date.now() - parseInt(timestamp, 10)) / 60_000;
   if (diffMin < 30) return 'fresh';
   if (diffMin < 120) return 'warning';
   return 'stale';
@@ -49,7 +72,7 @@ async function fetchGoonReport() {
     const res = await fetch('https://api.tarkov.dev/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: QUERY }),
+      body: JSON.stringify({ query: getQuery() }),
     });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -94,5 +117,9 @@ function showError(msg) {
 }
 
 // Init
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === currentMode));
+});
 fetchGoonReport();
 setInterval(fetchGoonReport, POLL_INTERVAL_MS);
