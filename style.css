@@ -1,0 +1,16 @@
+/* Shared base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  color: #e0d9cc;
+}
+
+/* Shared staleness colors */
+.fresh   { color: #e0d9cc; }
+.warning { color: #d4a017; }
+.stale   { color: #c0392b; }

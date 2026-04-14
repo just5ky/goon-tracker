@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Real-time Escape from Tarkov Goon squad location tracker — PVE mode" />
+  <title>Goon Tracker — EFT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- Header -->
+    <header>
+      <div id="header-left">
+        <img id="header-goon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Goon" />
+        <div id="header-text">
+          <h1>Goon Tracker</h1>
+          <span id="mode-badge">PVE · Auto-updates every 3 min</span>
+        </div>
+      </div>
+      <div id="header-right">
+        <div id="tarkov-clock">
+          <span class="tarkov-clock-label">IN-GAME</span>
+          <div class="tarkov-clock-times">
+            <span class="tarkov-server-label">☽</span><span id="tarkov-left">--:--</span>
+            <span class="tarkov-sep">/</span>
+            <span class="tarkov-server-label">☀</span><span id="tarkov-right">--:--</span>
+          </div>
+        </div>
+        <div id="header-meta">
+          <span id="update-status">Updating...</span>
+          <button id="refresh-btn" onclick="loadReports()">Refresh</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Report history -->
+    <section>
+      <div class="section-label">Recent Reports</div>
+      <table id="report-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Map</th>
+            <th>Reported</th>
+          </tr>
+        </thead>
+        <tbody id="report-body">
+          <tr><td colspan="3" class="loading-row">Fetching data...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Usage guide -->
+    <section id="guide">
+      <div class="section-label">Usage Guide</div>
+
+      <div class="guide-grid">
+
+        <div class="guide-card">
+          <div class="guide-card-title">Who are the Goons?</div>
+          <div class="guide-card-body">
+            Knight, Big Pipe, and Bird's Eye are a roaming Scav squad that
+            spawns on a single map per raid cycle. They're highly dangerous
+            and their location changes each reset.
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Reading the tracker</div>
+          <div class="guide-card-body">
+            Rows are sorted newest-first. The top row is the most recent
+            player-submitted sighting. All times are relative to your local
+            clock and update every 3 minutes.
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Report freshness</div>
+          <div class="guide-card-body">
+            <div class="legend">
+              <div class="legend-row">
+                <span class="legend-dot fresh"></span>
+                <span>Within 30 min — likely current</span>
+              </div>
+              <div class="legend-row">
+                <span class="legend-dot warning"></span>
+                <span>30 min – 2 hr — possibly stale</span>
+              </div>
+              <div class="legend-row">
+                <span class="legend-dot stale"></span>
+                <span>Over 2 hr — treat as old data</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">OBS Overlay</div>
+          <div class="guide-card-body">
+            Add a Browser Source in OBS and point it at:
+          </div>
+          <div class="obs-url" id="overlay-url">/overlay.html</div>
+          <div class="guide-card-body">
+            Recommended size: 300 × 100 px. Enable transparent background.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      Data via <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev</a>
+      &nbsp;·&nbsp;
+      Reports are player-submitted and may not reflect current raid state
+    </footer>
+
+  </div>
+
+  <script src="site.js"></script>
+  <script>
+    // Set overlay URL to absolute for easy copy
+    document.getElementById('overlay-url').textContent =
+      window.location.origin + '/overlay.html';
+  </script>
+</body>
+</html>

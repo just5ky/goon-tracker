@@ -1,0 +1,418 @@
+/* ── Tarkov theme tokens ─────────────────────────────────────────── */
+:root {
+  --bg:          #0b0c0a;
+  --bg-card:     #111310;
+  --bg-row-alt:  #0f100e;
+  --border:      #252820;
+  --border-accent: #3a3d30;
+  --gold:        #c9a84c;
+  --gold-dim:    #8a7235;
+  --text:        #f0ece0;
+  --text-muted:  #a09d8a;
+  --text-faint:  #6a6a58;
+  --fresh:       #f0ece0;
+  --warning:     #c9a84c;
+  --stale:       #8b2a2a;
+  --stale-text:  #c0392b;
+  --radius:      3px;
+}
+
+/* ── Reset / base ────────────────────────────────────────────────── */
+body {
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+#app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+#header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#header-goon {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-accent);
+  flex-shrink: 0;
+  /* sepia tint for worn look */
+  filter: sepia(0.2) brightness(0.9);
+}
+
+#header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+h1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+#mode-badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  border: 1px solid var(--border-accent);
+  padding: 2px 7px;
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+#header-right {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+#header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#update-status {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Live pulse dot */
+#update-status::before {
+  content: '▸ ';
+  color: var(--gold-dim);
+}
+
+/* Tarkov clock — website */
+#tarkov-clock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tarkov-clock-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.tarkov-clock-times {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  color: var(--gold);
+}
+
+.tarkov-server-label {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.tarkov-sep {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+#refresh-btn {
+  background: transparent;
+  border: 1px solid var(--border-accent);
+  color: var(--text-muted);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+#refresh-btn:hover:not(:disabled) {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+#refresh-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── Section headings ────────────────────────────────────────────── */
+.section-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Report table ────────────────────────────────────────────────── */
+#report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+}
+
+#report-table thead tr {
+  border-bottom: 1px solid var(--border-accent);
+}
+
+#report-table th {
+  text-align: left;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 0 0 10px 0;
+}
+
+#report-table th:first-child,
+#report-table td:first-child { width: 36px; }
+
+#report-table th:last-child,
+#report-table td:last-child { text-align: right; }
+
+#report-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+#report-table tbody tr:nth-child(odd) {
+  background: var(--bg-row-alt);
+}
+
+#report-table tbody tr:first-child td { padding-top: 14px; }
+
+#report-table tbody tr:hover { background: #151710; }
+
+#report-table td { padding: 11px 0; }
+
+.row-num {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+/* Rank 1 highlight */
+#report-table tbody tr:first-child .row-num {
+  color: var(--gold-dim);
+}
+
+#report-table tbody tr:first-child .map-cell {
+  color: var(--gold);
+}
+
+.map-cell {
+  color: var(--text);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.map-name {
+  text-transform: uppercase;
+}
+
+.map-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.map-link:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold-dim);
+}
+
+.map-meta {
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: none;
+}
+
+.loading-row {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 40px 0;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.1em;
+}
+
+/* ── Staleness (override shared) ─────────────────────────────────── */
+.fresh   { color: var(--fresh); }
+.warning { color: var(--warning); }
+.stale   { color: var(--stale-text); }
+
+/* ── Usage guide ─────────────────────────────────────────────────── */
+#guide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.guide-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.guide-card-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+
+.guide-card-body {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.fresh   { background: var(--fresh); }
+.legend-dot.warning { background: var(--warning); }
+.legend-dot.stale   { background: var(--stale-text); }
+
+/* ── OBS guide block ─────────────────────────────────────────────── */
+.guide-card-body + .guide-card-body {
+  margin-top: 6px;
+}
+
+.obs-url {
+  background: #0a0b09;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--gold);
+  word-break: break-all;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+footer {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  padding-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+footer::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: var(--border);
+  width: 100%;
+}
+
+footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+footer a:hover { color: var(--gold-dim); }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 500px) {
+  #app { padding: 24px 14px 48px; gap: 24px; }
+
+  h1 { font-size: 20px; }
+
+  #header-goon { width: 48px; height: 48px; }
+
+  #update-status { display: none; }
+
+  #report-table { font-size: 12px; }
+  .map-cell { font-size: 13px; }
+
+  .guide-grid { grid-template-columns: 1fr; }
+}

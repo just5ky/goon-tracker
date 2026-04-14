@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goon Tracker — Overlay</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="overlay.css" />
+</head>
+<body>
+  <div id="overlay">
+    <img id="goon-image" src="" alt="Goon" />
+    <div id="info">
+      <div id="map-name"></div>
+      <div id="last-seen"></div>
+      <div id="tarkov-time">
+        <span class="tarkov-server-label">☽</span><span id="tarkov-left">--:--</span>
+        <span class="tarkov-sep"> / </span>
+        <span class="tarkov-server-label">☀</span><span id="tarkov-right">--:--</span>
+      </div>
+    </div>
+  </div>
+  <script src="overlay.js"></script>
+</body>
+</html>

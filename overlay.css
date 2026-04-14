@@ -1,0 +1,60 @@
+/* OBS overlay — transparent background */
+body {
+  background: transparent;
+}
+
+#overlay {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: rgba(10, 10, 10, 0.72);
+  border: 1px solid rgba(180, 160, 120, 0.25);
+  border-radius: 4px;
+  width: fit-content;
+}
+
+#goon-image {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+#info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#map-name {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #e0d9cc;
+  line-height: 1;
+}
+
+#last-seen {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
+}
+
+#tarkov-time {
+  font-size: 11px;
+  color: #c9a84c;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+#tarkov-time .tarkov-server-label {
+  font-size: 9px;
+  color: #8a8870;
+}
+
+#tarkov-time .tarkov-sep {
+  color: #555;
+}
