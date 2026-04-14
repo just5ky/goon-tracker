@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.user
+*.swp
+*.swo
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Docker local overrides
+docker-compose.override.yml
+
+# Logs
+*.log

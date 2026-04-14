@@ -24,7 +24,7 @@ The Goons (Knight, Big Pipe, and Bird's Eye) are a roaming squad of Scavs that s
 
 ## How to Report Sightings
 
-Use [Tarkov Monitor](https://tarkov.dev/tarkov-monitor) — a background app that automatically submits your goon sightings to tarkov.dev while you play. It runs silently alongside the game and requires no manual input.
+Use [Tarkov Monitor](https://tarkov.dev/tarkov-monitor) — a background app that that you can use to submit your goon sightings to tarkov.dev while you play. It runs silently alongside the game.
 
 ---
 
@@ -52,6 +52,8 @@ Any format works (`.png`, `.jpg`, `.webp`) as long as the extension matches.
    - Or if hosted: `https://yourdomain.com/overlay.html`
 3. Set width `355`, height `104` (adjust to taste)
 4. Enable **Shutdown source when not visible** (optional, saves resources)
+
+![](/images/overlay.png)
 
 The overlay refreshes automatically every 3 minutes.
 
