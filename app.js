@@ -4,7 +4,7 @@ const GOON_IMAGES = [
   'images/birdseye.png',
 ];
 
-const POLL_INTERVAL_MS = 180_000; // 3 minutes
+const POLL_INTERVAL_MS = 360_000; // 6 minutes — tarkov.dev caches data for 5 min
 
 // Mode: URL param > localStorage > default pve
 // API uses 'pve' or 'regular' (PvP). 'pvp' is a legacy alias.

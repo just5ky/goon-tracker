@@ -9,7 +9,7 @@ Real-time Escape from Tarkov Goon location tracker — OBS overlay + web dashboa
 - Live OBS overlay showing current Goon map location
 - Web dashboard with last 10 reported locations
 - **PvE and PvP mode toggle** — switch on the website or overlay, saved automatically
-- Auto-refreshes every 3 minutes
+- Auto-refreshes every 6 minutes (respects tarkov.dev 5-min cache)
 - Dual in-game Tarkov clock (both server pools, millisecond precision)
 - Staleness colour coding (fresh / warning / stale)
 - Random Knight / Big Pipe / Bird's Eye image rotation
@@ -24,7 +24,9 @@ The Goons (Knight, Big Pipe, and Bird's Eye) are a roaming squad of Scavs that s
 
 ## How to Report Sightings
 
-Use [Tarkov Monitor](https://tarkov.dev/tarkov-monitor) — a background app that that you can use to submit your goon sightings to tarkov.dev while you play. It runs silently alongside the game.
+**In-game:** Use [Tarkov Monitor](https://tarkov.dev/tarkov-monitor) — a background app that submits your goon sightings to tarkov.dev automatically while you play. Runs silently alongside the game.
+
+**Discord:** The [Stash Discord Bot](https://tarkov.dev/stash-discord-bot) lets you look up and report goon locations directly from any Discord server.
 
 ---
 
@@ -55,7 +57,7 @@ Any format works (`.png`, `.jpg`, `.webp`) as long as the extension matches.
 
 ![](/images/overlay.png)
 
-The overlay refreshes automatically every 3 minutes.
+The overlay refreshes automatically every 6 minutes.
 
 #### PvE vs PvP mode
 
@@ -148,6 +150,14 @@ goon-tracker/
 ├── docker-compose.yml
 └── images/          — drop knight.png, bigpipe.png, birdseye.png here
 ```
+
+---
+
+## Contributing
+
+Issues and PRs welcome — see [bug reports](.github/ISSUE_TEMPLATE/bug_report.yml) and [feature requests](.github/ISSUE_TEMPLATE/feature_request.yml) templates.
+
+This project is open source: [github.com/just5ky/goon-tracker](https://github.com/just5ky/goon-tracker)
 
 ---
 

@@ -338,8 +338,12 @@ h1 {
 
 .guide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+}
+
+.guide-card--full {
+  grid-column: 1 / -1;
 }
 
 .guide-card {
@@ -424,9 +428,9 @@ h1 {
 /* ── Footer ──────────────────────────────────────────────────────── */
 footer {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.08em;
-  color: var(--text-faint);
+  color: var(--text-muted);
   padding-top: 4px;
   display: flex;
   align-items: center;

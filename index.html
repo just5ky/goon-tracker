@@ -27,7 +27,7 @@
               <button class="mode-btn" data-mode="pve" onclick="setMode('pve')">PvE</button>
               <button class="mode-btn" data-mode="regular" onclick="setMode('regular')">PvP</button>
             </div>
-            <span id="mode-badge">Auto-updates every 3 min</span>
+            <span id="mode-badge">Auto-updates every 6 min</span>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@
           <div class="guide-card-body">
             Rows are sorted newest-first. The top row is the most recent
             player-submitted sighting. All times are relative to your local
-            clock and update every 3 minutes.
+            clock and update every 6 minutes.
           </div>
         </div>
 
@@ -113,12 +113,18 @@
           <div class="guide-card-body">
             Spotted goons in-game? Use
             <a href="https://tarkov.dev/tarkov-monitor" target="_blank" rel="noopener" class="guide-link">Tarkov Monitor</a>
-            — a background app that you can use to submit your sightings
-            to tarkov.dev while you play. Runs silently alongside the game. 
+            — a background app that submits your sightings to tarkov.dev
+            automatically while you play. Runs silently alongside the game.
+          </div>
+          <div class="guide-card-body">
+            Prefer Discord? The
+            <a href="https://tarkov.dev/stash-discord-bot" target="_blank" rel="noopener" class="guide-link">Stash Discord Bot</a>
+            lets you look up and report goon locations directly from any
+            Discord server.
           </div>
         </div>
 
-        <div class="guide-card">
+        <div class="guide-card guide-card--full">
           <div class="guide-card-title">OBS Overlay</div>
           <div class="guide-card-body">
             Add a Browser Source in OBS and point it at:
@@ -143,6 +149,8 @@
       Data via <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev</a>
       &nbsp;·&nbsp;
       Reports are player-submitted and may not reflect current raid state
+      &nbsp;·&nbsp;
+      <a href="https://github.com/just5ky/goon-tracker" target="_blank" rel="noopener">Open source on GitHub</a>
     </footer>
 
   </div>
