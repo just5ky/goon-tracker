@@ -1,26 +1,50 @@
-/* ── Tarkov theme tokens ─────────────────────────────────────────── */
+/* ── Tarkov tactical theme tokens ────────────────────────────────── */
 :root {
-  --bg:          #0b0c0a;
-  --bg-card:     #111310;
-  --bg-row-alt:  #0f100e;
-  --border:      #252820;
-  --border-accent: #3a3d30;
-  --gold:        #c9a84c;
-  --gold-dim:    #8a7235;
-  --text:        #f0ece0;
-  --text-muted:  #a09d8a;
-  --text-faint:  #6a6a58;
-  --fresh:       #f0ece0;
-  --warning:     #c9a84c;
-  --stale:       #8b2a2a;
-  --stale-text:  #c0392b;
-  --radius:      3px;
+  --bg:            #050603;
+  --bg-card:       #080a05;
+  --bg-row-alt:    #070904;
+  --border:        #1E2814;
+  --border-accent: #2D3820;
+  --gold:          #5C7A2E;
+  --gold-dim:      #3D4A26;
+  --text:          #c0d0a8;
+  --text-muted:    #6A8A48;
+  --text-faint:    #3D4A26;
+  --fresh:         #8CA870;
+  --warning:       #CC7700;
+  --stale:         #8B2020;
+  --stale-text:    #B03030;
+  --radius:        1px;
 }
 
 /* ── Reset / base ────────────────────────────────────────────────── */
 body {
   background: var(--bg);
   min-height: 100vh;
+}
+
+/* Scanlines */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 4px,
+    rgba(0, 0, 0, 0.05) 4px, rgba(0, 0, 0, 0.05) 5px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Vignette */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+  z-index: 9998;
 }
 
 /* ── Layout ──────────────────────────────────────────────────────── */
@@ -31,6 +55,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Header ──────────────────────────────────────────────────────── */
@@ -40,7 +66,16 @@ header {
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #3D4A26 20%, #5C7A2E 50%, #3D4A26 80%, transparent);
+  animation: line-pulse 5s ease-in-out infinite;
 }
 
 #header-left {
@@ -56,8 +91,7 @@ header {
   border-radius: var(--radius);
   border: 1px solid var(--border-accent);
   flex-shrink: 0;
-  /* sepia tint for worn look */
-  filter: sepia(0.2) brightness(0.9);
+  filter: sepia(0.3) brightness(0.85) hue-rotate(30deg);
 }
 
 #header-text {
@@ -67,13 +101,14 @@ header {
 }
 
 h1 {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-family: 'Bebas Neue', 'Rajdhani', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
   color: var(--gold);
   text-transform: uppercase;
   line-height: 1;
+  text-shadow: 0 0 16px rgba(92, 122, 46, 0.3);
 }
 
 #mode-row {
@@ -91,9 +126,8 @@ h1 {
   background: transparent;
   border: 1px solid var(--border-accent);
   color: var(--text-faint);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 2px 9px;
@@ -103,9 +137,9 @@ h1 {
 }
 
 .mode-btn.active {
-  border-color: var(--gold-dim);
+  border-color: var(--gold);
   color: var(--gold);
-  background: rgba(201, 168, 76, 0.07);
+  background: rgba(92, 122, 46, 0.08);
 }
 
 .mode-btn:hover:not(.active) {
@@ -115,10 +149,11 @@ h1 {
 
 #mode-badge {
   display: inline-block;
-  font-size: 9px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
   letter-spacing: 0.18em;
-  color: var(--text-muted);
-  border: 1px solid var(--border-accent);
+  color: var(--text-faint);
+  border: 1px solid var(--border);
   padding: 2px 7px;
   border-radius: var(--radius);
   text-transform: uppercase;
@@ -140,18 +175,18 @@ h1 {
 }
 
 #update-status {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-faint);
   font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.1em;
 }
 
-/* Live pulse dot */
 #update-status::before {
   content: '▸ ';
   color: var(--gold-dim);
 }
 
-/* Tarkov clock — website */
+/* Tarkov clock */
 #tarkov-clock {
   display: flex;
   align-items: center;
@@ -159,9 +194,8 @@ h1 {
 }
 
 .tarkov-clock-label {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-faint);
@@ -190,9 +224,8 @@ h1 {
   background: transparent;
   border: 1px solid var(--border-accent);
   color: var(--text-muted);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 5px 14px;
@@ -202,9 +235,9 @@ h1 {
 }
 
 #refresh-btn:hover:not(:disabled) {
-  border-color: var(--gold-dim);
+  border-color: var(--gold);
   color: var(--gold);
-  background: rgba(201, 168, 76, 0.06);
+  background: rgba(92, 122, 46, 0.06);
 }
 
 #refresh-btn:disabled {
@@ -214,15 +247,19 @@ h1 {
 
 /* ── Section headings ────────────────────────────────────────────── */
 .section-label {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-faint);
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
+}
+
+.section-label::before {
+  content: '> ';
+  color: var(--gold-dim);
 }
 
 /* ── Report table ────────────────────────────────────────────────── */
@@ -239,10 +276,9 @@ h1 {
 
 #report-table th {
   text-align: left;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-faint);
   padding: 0 0 10px 0;
@@ -265,7 +301,7 @@ h1 {
 
 #report-table tbody tr:first-child td { padding-top: 14px; }
 
-#report-table tbody tr:hover { background: #151710; }
+#report-table tbody tr:hover { background: #0d1009; }
 
 #report-table td { padding: 11px 0; }
 
@@ -274,7 +310,6 @@ h1 {
   font-size: 11px;
 }
 
-/* Rank 1 highlight */
 #report-table tbody tr:first-child .row-num {
   color: var(--gold-dim);
 }
@@ -320,8 +355,9 @@ h1 {
   color: var(--text-muted);
   text-align: center;
   padding: 40px 0;
-  font-family: 'Rajdhani', sans-serif;
-  letter-spacing: 0.1em;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
 }
 
 /* ── Staleness (override shared) ─────────────────────────────────── */
@@ -349,6 +385,7 @@ h1 {
 .guide-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--gold-dim);
   border-radius: var(--radius);
   padding: 16px;
   display: flex;
@@ -357,18 +394,19 @@ h1 {
 }
 
 .guide-card-title {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--gold);
 }
 
 .guide-card-body {
-  font-size: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.65;
+  letter-spacing: 0.03em;
 }
 
 .legend {
@@ -381,13 +419,14 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
+  font-family: 'Share Tech Mono', monospace;
 }
 
 .legend-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -402,35 +441,36 @@ h1 {
 }
 
 .guide-link {
-  color: var(--gold-dim);
+  color: var(--gold);
   text-decoration: none;
   border-bottom: 1px solid var(--gold-dim);
   transition: color 0.15s, border-color 0.15s;
 }
 
 .guide-link:hover {
-  color: var(--gold);
+  color: var(--text);
   border-bottom-color: var(--gold);
 }
 
 .obs-url {
-  background: #0a0b09;
+  background: #040604;
   border: 1px solid var(--border);
-  border-left: 2px solid var(--gold-dim);
+  border-left: 2px solid var(--gold);
   border-radius: var(--radius);
   padding: 10px 14px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--gold);
   word-break: break-all;
+  letter-spacing: 0.05em;
 }
 
 /* ── Footer ──────────────────────────────────────────────────────── */
 footer {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--text-faint);
   padding-top: 4px;
   display: flex;
   align-items: center;
@@ -447,16 +487,20 @@ footer::before {
 }
 
 footer a {
-  color: var(--text-muted);
+  color: var(--text-faint);
   text-decoration: none;
   transition: color 0.15s;
 }
 
 footer a:hover { color: var(--gold-dim); }
 
-/* ── Responsive ──────────────────────────────────────────────────── */
+/* ── Animations ──────────────────────────────────────────────────── */
+@keyframes line-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
 
-/* Tablet */
+/* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   #app { padding: 28px 18px 52px; gap: 28px; }
 
@@ -474,19 +518,16 @@ footer a:hover { color: var(--gold-dim); }
   }
 
   #tarkov-clock { gap: 6px; }
-
   .tarkov-clock-times { font-size: 12px; }
-
   #header-meta { gap: 8px; }
 }
 
-/* Mobile */
 @media (max-width: 500px) {
   #app { padding: 20px 14px 44px; gap: 20px; }
 
   header { gap: 10px; }
 
-  h1 { font-size: 20px; }
+  h1 { font-size: 22px; }
 
   #header-goon { width: 44px; height: 44px; }
 
@@ -501,5 +542,5 @@ footer a:hover { color: var(--gold-dim); }
 
   .guide-grid { grid-template-columns: 1fr; }
 
-  .obs-url { font-size: 11px; }
+  .obs-url { font-size: 10px; }
 }

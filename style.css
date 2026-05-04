@@ -6,11 +6,11 @@
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
-  color: #e0d9cc;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  color: #c0d0a8;
 }
 
 /* Shared staleness colors */
-.fresh   { color: #e0d9cc; }
-.warning { color: #d4a017; }
-.stale   { color: #c0392b; }
+.fresh   { color: #8CA870; }
+.warning { color: #CC7700; }
+.stale   { color: #B03030; }

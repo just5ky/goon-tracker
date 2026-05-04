@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tarkov BRB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  background: #050603;
+  overflow: hidden;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.scanlines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 4px,
+    rgba(0,0,0,0.06) 4px, rgba(0,0,0,0.06) 5px
+  );
+  z-index: 10; pointer-events: none;
+}
+
+.grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  opacity: 0.04;
+  z-index: 3; pointer-events: none;
+}
+
+.vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.72) 100%);
+  z-index: 4; pointer-events: none;
+}
+
+.scan-band {
+  position: absolute;
+  left: 0; right: 0;
+  height: 90px;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(80, 110, 40, 0.04) 50%,
+    transparent 100%
+  );
+  animation: scan-move 9s linear infinite;
+  z-index: 5;
+}
+
+/* === TOP BAR === */
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 42px;
+  background: rgba(6, 8, 4, 0.97);
+  border-bottom: 1px solid #2D3820;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 24px;
+  z-index: 20;
+}
+
+.h-item {
+  color: #3D4A26;
+  font-size: 8px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.h-item.dim { color: #2A3318; }
+
+.h-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #8B2020;
+  animation: dot-blink 1.8s ease-in-out infinite;
+}
+
+/* === BOTTOM BAR === */
+.footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 42px;
+  background: rgba(6, 8, 4, 0.97);
+  border-top: 1px solid #2D3820;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 20;
+}
+
+.footer-ch { color: #5C7A2E; font-size: 11px; letter-spacing: 3px; }
+.footer-info { color: #2D3820; font-size: 8px; letter-spacing: 2px; }
+
+/* === SIDE PANELS === */
+.side-panel {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 190px;
+  z-index: 15;
+}
+.side-panel.left  { left: 70px; }
+.side-panel.right { right: 70px; }
+
+.sp-row {
+  border: 1px solid #1E2814;
+  padding: 9px 12px;
+  margin-bottom: 5px;
+}
+
+.sp-label { color: #2A3318; font-size: 7px; letter-spacing: 2px; margin-bottom: 4px; }
+.sp-val   { font-size: 11px; letter-spacing: 2px; }
+.sp-val.ok   { color: #3D5A20; }
+.sp-val.warn { color: #5C3800; }
+.sp-val.off  { color: #6B1A1A; }
+
+/* === CENTER TERMINAL === */
+.center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 760px;
+  z-index: 15;
+}
+
+.terminal {
+  border: 1px solid #2D3820;
+  border-left-width: 3px;
+  border-left-color: #5C7A2E;
+  background: rgba(6, 9, 4, 0.88);
+  padding: 26px 36px 28px;
+}
+
+.term-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #1A2010;
+}
+
+.td { width: 6px; height: 6px; border-radius: 50%; }
+.td.r { background: #6B1A1A; }
+.td.y { background: #5C4000; }
+.td.g { background: #1E3A10; }
+
+.term-title { color: #2D3820; font-size: 8px; letter-spacing: 3px; flex: 1; text-align: center; }
+
+.term-line {
+  color: #2A3A18;
+  font-size: 9px;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+.term-line::before { content: '> '; color: #3D5220; }
+
+.main-status {
+  color: #6B8A40;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  letter-spacing: 6px;
+  line-height: 1;
+  margin: 18px 0 16px;
+  text-shadow: 0 0 18px rgba(80, 110, 40, 0.25);
+}
+
+.reconnect-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #4A5E2E;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: #4A5E2E;
+  animation: cur-blink 1s step-end infinite;
+}
+
+/* === ANIMATIONS === */
+@keyframes scan-move {
+  0%   { top: -90px; }
+  100% { top: 1170px; }
+}
+
+@keyframes dot-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes cur-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+<div class="scan-band"></div>
+
+<div class="header">
+  <div class="h-item"><div class="h-dot"></div> OPERATOR: OFFLINE</div>
+  <div class="h-item dim">ENCRYPTION: ACTIVE</div>
+  <div class="h-item dim">SIGNAL: DEGRADED</div>
+  <div class="h-item dim">CHANNEL: PMC_01</div>
+</div>
+
+<div class="side-panel left">
+  <div class="sp-row">
+    <div class="sp-label">OPERATOR STATUS</div>
+    <div class="sp-val off">OFFLINE</div>
+  </div>
+  <div class="sp-row">
+    <div class="sp-label">RAID STATUS</div>
+    <div class="sp-val ok">ACTIVE</div>
+  </div>
+  <div class="sp-row">
+    <div class="sp-label">SIGNAL STRENGTH</div>
+    <div class="sp-val warn">DEGRADED</div>
+  </div>
+</div>
+
+<div class="center">
+  <div class="terminal">
+    <div class="term-head">
+      <div class="td r"></div>
+      <div class="td y"></div>
+      <div class="td g"></div>
+      <div class="term-title">PMC COMMUNICATIONS TERMINAL // SECURE</div>
+    </div>
+    <div class="term-line">OPERATOR_STATUS: CHECKING...</div>
+    <div class="term-line">FEED_CONNECTION: INTERRUPTED</div>
+    <div class="term-line">ATTEMPTING RECONNECT...</div>
+    <div class="main-status">OPERATOR<br>OFFLINE</div>
+    <div class="reconnect-row">
+      RECONNECTING<span id="dots"></span>
+      <span class="cursor"></span>
+    </div>
+  </div>
+</div>
+
+<div class="side-panel right">
+  <div class="sp-row">
+    <div class="sp-label">LOCATION</div>
+    <div class="sp-val">N59° E030°</div>
+  </div>
+  <div class="sp-row">
+    <div class="sp-label">ENCRYPTION</div>
+    <div class="sp-val ok">AES-256</div>
+  </div>
+  <div class="sp-row">
+    <div class="sp-label">FEED TYPE</div>
+    <div class="sp-val">PMC_LIVE</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span class="footer-ch"></span>
+  <span class="footer-info">BE RIGHT BACK // STAND BY</span>
+</div>
+
+<script>
+const dotsEl = document.getElementById('dots');
+let d = 0;
+setInterval(() => {
+  d = (d + 1) % 4;
+  dotsEl.textContent = '.'.repeat(d);
+}, 500);
+</script>
+</body>
+</html>

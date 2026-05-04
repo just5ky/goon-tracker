@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tarkov Screen Border</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.border-wrap {
+  position: absolute;
+  inset: 0;
+  animation: border-glitch 22s infinite;
+}
+
+/* === TOP BAR === */
+.top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 46px;
+  background: rgba(5, 7, 3, 0.97);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.top::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #3D4A26 20%, #5C7A2E 50%, #3D4A26 80%, transparent);
+  animation: line-pulse 5s ease-in-out infinite;
+}
+
+/* === BOTTOM BAR === */
+.bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: rgba(5, 7, 3, 0.97);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.bottom::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #3D4A26 20%, #5C7A2E 50%, #3D4A26 80%, transparent);
+  animation: line-pulse 5s ease-in-out infinite;
+}
+
+/* === SIDE BARS === */
+.edge {
+  position: absolute;
+  top: 46px;
+  bottom: 40px;
+  width: 4px;
+  background: rgba(4, 6, 2, 0.94);
+  z-index: 20;
+}
+
+.edge.left {
+  left: 0;
+  border-right: 1px solid #2D3820;
+}
+
+.edge.right {
+  right: 0;
+  border-left: 1px solid #2D3820;
+}
+
+.tick {
+  position: absolute;
+  height: 1px;
+  background: rgba(92, 122, 46, 0.3);
+}
+
+.edge.left .tick  { right: 0; width: 3px; }
+.edge.right .tick { left: 0;  width: 3px; }
+.tick.sm { width: 2px !important; background: rgba(61, 74, 38, 0.2) !important; }
+
+/* === CORNER ORNAMENTS === */
+.cp {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  z-index: 40;
+}
+
+.cp.tl { top: 0;    left: 0; }
+.cp.tr { top: 0;    right: 0; }
+.cp.bl { bottom: 0; left: 0; }
+.cp.br { bottom: 0; right: 0; }
+
+/* Outer bracket */
+.cp::before {
+  content: '';
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  border-color: #5C7A2E;
+  border-style: solid;
+  border-width: 0;
+  animation: brkt-glow 4s ease-in-out infinite;
+}
+
+.cp.tl::before { top: 0;    left: 0;   border-top-width: 2px;    border-left-width: 2px; }
+.cp.tr::before { top: 0;    right: 0;  border-top-width: 2px;    border-right-width: 2px; }
+.cp.bl::before { bottom: 0; left: 0;   border-bottom-width: 2px; border-left-width: 2px; }
+.cp.br::before { bottom: 0; right: 0;  border-bottom-width: 2px; border-right-width: 2px; }
+
+/* Inner bracket */
+.cp::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: rgba(92, 122, 46, 0.2);
+  border-style: solid;
+  border-width: 0;
+}
+
+.cp.tl::after { top: 10px;    left: 10px;   border-top-width: 1px;    border-left-width: 1px; }
+.cp.tr::after { top: 10px;    right: 10px;  border-top-width: 1px;    border-right-width: 1px; }
+.cp.bl::after { bottom: 10px; left: 10px;   border-bottom-width: 1px; border-left-width: 1px; }
+.cp.br::after { bottom: 10px; right: 10px;  border-bottom-width: 1px; border-right-width: 1px; }
+
+/* Corner coordinate label */
+.cp-coord {
+  position: absolute;
+  color: rgba(92, 122, 46, 0.35);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.cp.tl .cp-coord { bottom: 8px; right: 4px; }
+.cp.tr .cp-coord { bottom: 8px; left:  4px; }
+.cp.bl .cp-coord { top:    8px; right: 4px; }
+.cp.br .cp-coord { top:    8px; left:  4px; }
+
+/* Corner dot */
+.cp-dot {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #5C7A2E;
+  box-shadow: 0 0 6px rgba(92, 122, 46, 0.6);
+  animation: cp-dot-cycle 4s ease-in-out infinite;
+}
+
+.cp.tl .cp-dot { top: 0;    left: 0; }
+.cp.tr .cp-dot { top: 0;    right: 0; }
+.cp.bl .cp-dot { bottom: 0; left: 0; }
+.cp.br .cp-dot { bottom: 0; right: 0; }
+
+/* === TOP CONTENT === */
+.t-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+.sig-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.sbar {
+  width: 3px;
+  background: #5C7A2E;
+  border-radius: 1px;
+}
+
+.sbar:nth-child(1) { height: 30%; animation: sbar-flicker 6s 0.0s infinite; }
+.sbar:nth-child(2) { height: 55%; animation: sbar-flicker 6s 0.5s infinite; }
+.sbar:nth-child(3) { height: 80%; animation: sbar-flicker 6s 1.0s infinite; }
+.sbar:nth-child(4) { height: 100%; animation: sbar-flicker 6s 1.5s infinite; opacity: 0.3; }
+
+.t-overlay-id {
+  color: #5C7A2E;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.t-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.t-title {
+  color: #4A5E2E;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  white-space: nowrap;
+}
+
+.t-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+.enc-badge {
+  color: #CC7700;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(204, 119, 0, 0.5);
+  padding: 2px 7px;
+  animation: enc-flicker 14s infinite;
+}
+
+.raid-badge {
+  color: #5C7A2E;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(92, 122, 46, 0.4);
+  padding: 2px 7px;
+}
+
+/* === BOTTOM CONTENT === */
+.b-channel {
+  color: #5C7A2E;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+.b-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #2D3820;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.b-coords {
+  color: #3D4A26;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+/* === ANIMATIONS === */
+@keyframes line-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+@keyframes brkt-glow {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(92,122,46,0.3)); }
+  50%       { filter: drop-shadow(0 0 8px rgba(92,122,46,0.55)); }
+}
+
+@keyframes cp-dot-cycle {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(92,122,46,0.6); }
+  50%       { opacity: 0.4; box-shadow: 0 0 3px rgba(92,122,46,0.2); }
+}
+
+@keyframes sbar-flicker {
+  0%, 100% { opacity: 1; }
+  45%, 55% { opacity: 0.38; }
+  50%       { opacity: 0.65; }
+}
+
+@keyframes enc-flicker {
+  0%, 88%, 100% { opacity: 1; }
+  89% { opacity: 0.4; }
+  90% { opacity: 0.85; }
+  91% { opacity: 0.55; }
+  92% { opacity: 1; }
+}
+
+@keyframes border-glitch {
+  0%, 95%, 100% { transform: translate(0, 0); filter: none; }
+  96% { transform: translate(-2px, 1px); filter: hue-rotate(5deg); }
+  97% { transform: translate(1px, -1px); }
+  98% { transform: translate(0, 0); }
+}
+</style>
+</head>
+<body>
+
+<div class="border-wrap">
+  <!-- TOP BAR -->
+  <div class="top">
+    <div class="t-left">
+      <div class="sig-bars">
+        <div class="sbar"></div>
+        <div class="sbar"></div>
+        <div class="sbar"></div>
+        <div class="sbar"></div>
+      </div>
+      <span class="t-overlay-id">PMC_TACTICAL_OVERLAY v2.3</span>
+    </div>
+
+    <div class="t-center">
+      <div class="t-title">ENCRYPTED TACTICAL FEED // RAID: ACTIVE // PMC_CH01</div>
+    </div>
+
+    <div class="t-right">
+      <div class="enc-badge">ENCRYPTED</div>
+      <div class="raid-badge">LIVE</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom">
+    <span class="b-channel"></span>
+    <div class="b-center">BE RIGHT BACK // STAND BY FOR RECONNECTION</div>
+    <span class="b-coords">N59°56' E030°20' // ALT: 22M</span>
+  </div>
+
+  <!-- SIDE BARS -->
+  <div class="edge left"  id="leftEdge"></div>
+  <div class="edge right" id="rightEdge"></div>
+
+  <!-- CORNER ORNAMENTS -->
+  <div class="cp tl"><div class="cp-dot"></div><div class="cp-coord">00:00</div></div>
+  <div class="cp tr"><div class="cp-dot"></div><div class="cp-coord">00:FF</div></div>
+  <div class="cp bl"><div class="cp-dot"></div><div class="cp-coord">FF:00</div></div>
+  <div class="cp br"><div class="cp-dot"></div><div class="cp-coord">FF:FF</div></div>
+</div>
+
+<script>
+['leftEdge', 'rightEdge'].forEach(id => {
+  const bar = document.getElementById(id);
+  const h = bar.offsetHeight;
+  for (let y = 80; y < h - 40; y += 80) {
+    const t = document.createElement('div');
+    t.className = 'tick' + (y % 160 !== 0 ? ' sm' : '');
+    t.style.top = y + 'px';
+    bar.appendChild(t);
+  }
+});
+</script>
+</body>
+</html>
